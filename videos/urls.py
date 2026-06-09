@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import Videos_list_views
+from .views import Videos_list_views, Videos_item_views
 
 urlpatterns = [
     path("videos", Videos_list_views.as_view(), name="videos_list"),
+    path("videos/<int:id>", Videos_item_views.as_view(), name="videos_itens"),
 ]
