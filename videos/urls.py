@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import Videos_list_views, Videos_item_views
+from .views import VideosViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path("videos", Videos_list_views.as_view(), name="videos_list"),
-    path("videos/<int:pk>", Videos_item_views.as_view(), name="videos_itens"),
-]
+router = DefaultRouter(trailing_slash=False)
+router.register('videos', VideosViewSet, basename='videos')
+
+
+urlpatterns = router.urls

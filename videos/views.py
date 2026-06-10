@@ -1,14 +1,15 @@
-from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import viewsets
 from .models import Videos
 from .serializers import VideosSerializer
+from rest_framework.permissions import IsAuthenticated
 
-class Videos_list_views(generics.ListCreateAPIView):
+
+
+
+class VideosViewSet(viewsets.ModelViewSet):
     queryset = Videos.objects.all()
     serializer_class = VideosSerializer
+    permission_classes = [IsAuthenticated]
 
-class Videos_item_views(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Videos.objects.all()
-    serializer_class = VideosSerializer
 
 
