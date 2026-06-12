@@ -3,6 +3,7 @@ from rest_framework import status
 from django.urls import reverse
 from .models import Videos
 
+
 class VideosAPITests(APITestCase):
 
     def setUp(self):
@@ -10,7 +11,7 @@ class VideosAPITests(APITestCase):
         self.video = Videos.objects.create(
             title="Test Video",
             description="Test Description",
-            video_url="http://test.com/video.mp4"
+            video_url="http://test.com/video.mp4",
         )
         self.list_url = reverse("videos_list")
         self.detail_url = reverse("videos_itens", kwargs={"id": self.video.id})
@@ -27,9 +28,9 @@ class VideosAPITests(APITestCase):
         data = {
             "title": "New Video",
             "description": "New Description",
-            "video_url": "http://newvideo.com/video.mp4"
+            "video_url": "http://newvideo.com/video.mp4",
         }
-        response = self.client.post(self.list_url, data, format='json')
+        response = self.client.post(self.list_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Videos.objects.count(), 2)
 
@@ -39,7 +40,7 @@ class VideosAPITests(APITestCase):
             "title": "New Video",
             # Faltando description e video_url
         }
-        response = self.client.post(self.list_url, data, format='json')
+        response = self.client.post(self.list_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_video_item_success(self):
@@ -58,7 +59,7 @@ class VideosAPITests(APITestCase):
     def test_update_video_success(self):
         """Testa a atualização parcial de um vídeo"""
         data = {"title": "Updated Title"}
-        response = self.client.put(self.detail_url, data, format='json')
+        response = self.client.put(self.detail_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.video.refresh_from_db()
         self.assertEqual(self.video.title, "Updated Title")
@@ -66,8 +67,8 @@ class VideosAPITests(APITestCase):
 
     def test_update_video_bad_request(self):
         """Testa a atualização de um vídeo com dados inválidos"""
-        data = {"title": ""} # String vazia para campo obrigatório
-        response = self.client.put(self.detail_url, data, format='json')
+        data = {"title": ""}  # String vazia para campo obrigatório
+        response = self.client.put(self.detail_url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_video_success(self):
