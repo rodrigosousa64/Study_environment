@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Videos, Category
+from .models import Videos, Category, Comment
 
 
 class Category_serializer(serializers.ModelSerializer):
@@ -31,3 +31,12 @@ class VideosSerializer(serializers.ModelSerializer):
             "category_info",
         ]
         read_only_fields = ["id", "created_at", "author", "category_info", "category"]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.username", read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "comment", "created_at", "video", "author","author_name"]
+        read_only_fields = ["id", "created_at", "video", "author"]

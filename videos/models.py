@@ -28,5 +28,21 @@ class Videos(models.Model):
         related_name="videos",
     )
 
+   # comments = models.ManyToManyField(Comment, related_name="videos", blank=True, null=True, default=None)
+
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    video = models.ForeignKey(
+        Videos, on_delete=models.CASCADE, related_name="comentarios"
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comentarios"
+    )
+
+    def __str__(self):
+        return f"Comentario de {self.author.username} em {self.created_at}"
