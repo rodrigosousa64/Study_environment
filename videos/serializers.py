@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Videos, Category, Comment
+from .validators import no_bad_words
 
 
 class Category_serializer(serializers.ModelSerializer):
@@ -9,6 +10,7 @@ class Category_serializer(serializers.ModelSerializer):
 
 
 class VideosSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(validators=[no_bad_words])
 
     category = serializers.SlugRelatedField(
         slug_field="slug",
@@ -31,6 +33,13 @@ class VideosSerializer(serializers.ModelSerializer):
             "category_info",
         ]
         read_only_fields = ["id", "created_at", "author", "category_info", "category"]
+
+    def validate_title(self, value):
+        if len(value) < 10:
+            raise serializers.ValidationError("Title must be at least 5 characters long")
+        if not value[0].isdigit():
+            raise serializers.ValidationError("Title must start with a number")
+        return value
 
 
 class CommentSerializer(serializers.ModelSerializer):
