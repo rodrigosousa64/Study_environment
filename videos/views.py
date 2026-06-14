@@ -5,6 +5,7 @@ from .serializers import VideosSerializer, Category_serializer, CommentSerialize
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import Is_author_or_readonly
 from django_filters.rest_framework import DjangoFilterBackend
+from .pagination import Videos_pagination
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -21,6 +22,7 @@ class VideosViewSet(viewsets.ModelViewSet):
     search_fields = ["title", "description"]
     ordering_fields = ["created_at", "title"]   
     ordering = ["-created_at"]
+    pagination_class = Videos_pagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
