@@ -4,6 +4,7 @@ from .models import Videos, Category, Comment
 from .serializers import VideosSerializer, Category_serializer, CommentSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import Is_author_or_readonly
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -16,6 +17,10 @@ class VideosViewSet(viewsets.ModelViewSet):
     queryset = Videos.objects.all()
     serializer_class = VideosSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, Is_author_or_readonly]
+    filterset_fields = ["category__slug", "author__username"]
+    search_fields = ["title", "description"]
+    ordering_fields = ["created_at", "title"]   
+    ordering = ["-created_at"]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
