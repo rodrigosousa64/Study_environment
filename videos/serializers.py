@@ -36,7 +36,9 @@ class VideosSerializer(serializers.ModelSerializer):
 
     def validate_title(self, value):
         if len(value) < 10:
-            raise serializers.ValidationError("Title must be at least 5 characters long")
+            raise serializers.ValidationError(
+                "Title must be at least 5 characters long"
+            )
         if not value[0].isdigit():
             raise serializers.ValidationError("Title must start with a number")
         return value
@@ -47,5 +49,5 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ["id", "comment", "created_at", "video", "author","author_name"]
+        fields = ["id", "comment", "created_at", "video", "author", "author_name"]
         read_only_fields = ["id", "created_at", "video", "author"]

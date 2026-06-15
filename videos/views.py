@@ -20,7 +20,7 @@ class VideosViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, Is_author_or_readonly]
     filterset_fields = ["category__slug", "author__username"]
     search_fields = ["title", "description"]
-    ordering_fields = ["created_at", "title"]   
+    ordering_fields = ["created_at", "title"]
     ordering = ["-created_at"]
     pagination_class = Videos_pagination
 
